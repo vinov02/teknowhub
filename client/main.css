@@ -1,17 +1,43 @@
-html{
-    scroll-behavior: smooth;
+:root {
+    --primary: #E50914;      /* Strong Red */
+    --secondary: #FF4500;    /* Deep Orange */
+    --accent: #FF8C00;       /* Orange accent */
+    --bg-main: #0C0C0C;      /* Pitch black background */
+    --bg-card: #161616;      /* Dark grey for cards */
+    --text-main: #F4F5F7;    /* Light text */
+    --text-muted: #A0A0A0;   /* Muted grey text */
+    --border-color: #2A2A2A; /* Subtle borders */
 }
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Outfit', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+/* Header & Nav */
 header {
-    background-color: #333;
-    color: #fff;
+    background: rgba(12, 12, 12, 0.85);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     padding: 1rem 0;
+    transition: all 0.3s ease;
 }
 
 nav {
@@ -20,273 +46,542 @@ nav {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 2rem;
+}
+
+.logo h1 {
+    margin: 0;
+    font-weight: 800;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo h1:hover {
+    transform: scale(1.05);
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 1rem;
-}
-
-.nav-links li {
+    gap: 1.5rem;
     margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
-    color: #fff;
+    color: var(--text-main);
     text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-links a:hover {
+    color: var(--secondary);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary);
+    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 2px;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 /* Home Section */
 .home-content {
     position: relative;
-    text-align: center;
-    color: #ffffff;
-    overflow: hidden; 
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 2rem;
 }
 
 .banner-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none; /* Prevents scroll hijacking by 3D canvas */
+}
+
+.home-content::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Mixing black, deep orange, and red with lower opacity so Spline shines through clearly */
+    background: linear-gradient(135deg, rgba(12, 12, 12, 0.4) 0%, rgba(229, 9, 20, 0.15) 50%, rgba(255, 69, 0, 0.15) 100%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .home-text {
-    position: absolute;
-    bottom: 15%;
-    left: 50%;
-    transform: translateX(-50%);
+    z-index: 2;
     text-align: center;
+    max-width: 700px;
+    padding: 3rem 2rem;
+    background: rgba(22, 22, 22, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    color: var(--text-main);
+    transform: translateY(0);
+    animation: floatUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-.home-content .btn {
+@keyframes floatUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.home-text h2 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.home-text p {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    color: var(--text-muted);
+}
+
+.btn {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #3f3f3f;
-    color: #ffffff;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    color: white;
     border: none;
     cursor: pointer;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(229, 9, 20, 0.5);
 }
 
 /* Sections */
 section {
-    padding: 2rem 1rem;
-    text-align: center;
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+section h2 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-main);
+    position: relative;
+    /* Centering using text-align inherit from block */
+}
+
+section h2::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 6px;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+section:hover h2::after {
+    width: 100px;
+}
+
+/* Products Section */
 .product-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    justify-items: center;
 }
 
 .product {
-    border: 1px solid #ccc;
-    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: center;
-    width: 300px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.product:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(255, 69, 0, 0.15);
+    border-color: var(--secondary);
 }
 
 .product img {
-    max-width: 100%;
-    height: auto;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.5s ease;
 }
 
-/* Footer */
-footer {
-    background-color: #333;
-    color: #fff;
+.product:hover img {
+    transform: scale(1.08);
+}
+
+.product h3 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-main);
+    transition: color 0.3s ease;
+}
+
+.product:hover h3 {
+    color: var(--primary);
+}
+
+.product p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.product .btn {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    box-shadow: none;
+    border-radius: 12px;
+}
+
+/* About Section */
+#about {
+    background: var(--bg-card);
+    border-radius: 30px;
+    padding: 4rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    border: 1px solid var(--border-color);
+    transition: transform 0.4s ease;
+}
+
+#about p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-muted);
     text-align: center;
-    padding: 1rem 0;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
 }
 
-.social-links a {
-    color: #fff;
-    margin: 0 0.5rem;
-    text-decoration: none;
+#about h3 {
+    font-size: 2rem;
+    color: var(--text-main);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.reels-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    justify-items: center;
+    margin-bottom: 2rem;
+}
+
+.reel-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Ensure the iframe rendered by instagram embed script respects the border-radius and width boundaries */
+.reel-card blockquote, 
+.reel-card iframe {
+    border-radius: 15px !important;
+    width: 100% !important;
+    min-width: 100px !important; /* overrides instagram default 326px min-width */
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+.features-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature {
+    background: var(--bg-main);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.feature:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(229, 9, 20, 0.1);
+}
+
+.feature h3 {
+    font-size: 1.4rem;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+}
+
+.feature p {
+    font-size: 1rem !important;
+    margin: 0 !important;
+    color: var(--text-muted) !important;
 }
 
 /* Contact Section */
 #contact {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-#contact h2 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #333;
+    max-width: 700px;
 }
 
 #contact form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 1.5rem;
+    background: var(--bg-card);
+    padding: 3rem;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color);
+    transition: transform 0.4s ease;
 }
 
-#contact input[type="text"],
-#contact input[type="email"],
+#contact input,
 #contact textarea {
     width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 1.2rem;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    font-family: inherit;
     font-size: 1rem;
-    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+#contact input::placeholder,
+#contact textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+#contact input:focus,
+#contact textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--bg-main);
+    box-shadow: 0 0 0 4px rgba(229, 9, 20, 0.15);
 }
 
 #contact textarea {
+    min-height: 180px;
     resize: vertical;
-    height: 150px;
 }
 
-#contact .btn {
-    background-color: #000000;
-    color: #fff;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+/* Added Scroll Animations Base Classes */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-#contact .btn:hover {
-    background-color: #0056b3;
+.animate-on-scroll.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* About Section */
-#about {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+/* Add stagger to product cards so they reveal in sequence */
+.product-container .product:nth-child(1) { transition-delay: 0.1s; }
+.product-container .product:nth-child(2) { transition-delay: 0.2s; }
+.product-container .product:nth-child(3) { transition-delay: 0.3s; }
+.product-container .product:nth-child(4) { transition-delay: 0.4s; }
+.product-container .product:nth-child(5) { transition-delay: 0.5s; }
+.product-container .product:nth-child(6) { transition-delay: 0.6s; }
+
+/* Add stagger to feature cards */
+.features-container .feature:nth-child(1) { transition-delay: 0.1s; }
+.features-container .feature:nth-child(2) { transition-delay: 0.2s; }
+.features-container .feature:nth-child(3) { transition-delay: 0.3s; }
+
+/* Footer */
+footer {
+    background-color: #050505;
+    color: white;
     text-align: center;
+    padding: 3rem 1rem;
+    margin-top: 4rem;
+    border-top: 1px solid var(--border-color);
 }
 
-#about h2 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #333;
+.social-links {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
 }
 
-#about p {
-    font-size: 1rem;
-    color: #666;
-    line-height: 1.6;
+.social-links a {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-#about h3 {
-    margin-top: 20px;
-    font-size: 1.5rem;
-    color: #333;
+.social-links a:hover {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    transform: translateY(-5px) rotate(10deg);
+    color: white;
 }
 
-#about video {
-    width: 30%;
-    max-width: 600px;
-    border-radius: 8px;
-    margin-top: 20px;
-}
+/* WhatsApp Float */
 .whatsapp-float {
     position: fixed;
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     bottom: 40px;
     right: 40px;
     background-color: #25d366;
     color: white;
-    border-radius: 50px;
-    text-align: center;
-    font-size: 30px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 100;
+    border-radius: 50%;
+    font-size: 35px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .whatsapp-float:hover {
+    transform: scale(1.15) rotate(5deg);
     background-color: #128c7e;
-    color: white;
-    text-decoration: none;
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
 }
 
+/* Media Queries */
+@media screen and (max-width: 992px) {
+    .home-text h2 { font-size: 2.8rem; }
+    
+    .reels-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 @media screen and (max-width: 768px) {
-    .nav-links {
-        flex-direction: row;
-        gap: 0.4rem;
-        
+    header { padding: 1rem; }
+    
+    nav {
+        flex-direction: column;
+        gap: 1.5rem;
     }
+    
+    .logo h1 { font-size: 2.5rem; }
 
-    .nav-links li {
-        margin: 0;
-        font-size: 0.6rem;
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .nav-links a { font-size: 1.1rem; }
+
+    .reels-container {
+        grid-template-columns: 1fr;
     }
 
     .home-text {
-        bottom: 5%;
-        font-size: 0.4rem;
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
     }
 
-    .product-container {
-        flex-direction: column;
+    .home-text h2 { font-size: 2.2rem; }
+    
+    .home-text p { font-size: 1rem; }
+
+    #about {
+        padding: 2rem;
+        border-radius: 20px;
     }
 
-    .product {
-        width: 100%;
-        max-width: 340px;
-    }
+    section { padding: 4rem 1rem; }
+    
+    section h2 { font-size: 2.2rem; }
 
-    #about video {
-        max-width: 100%;
-    }
+    #contact form { padding: 2rem; }
 }
 
-/* Mobile devices */
-@media screen and (max-width: 400px) {
-    .nav-links {
-        font-size: 0.9rem;
+@media screen and (max-width: 480px) {
+    .home-text h2 { font-size: 1.8rem; }
+    
+    .btn { padding: 0.8rem 2rem; }
+    
+    .product { max-width: 100%; }
+    
+    .whatsapp-float {
+        width: 55px;
+        height: 55px;
+        font-size: 30px;
+        bottom: 20px;
+        right: 20px;
     }
-
-    .home-text {
-        bottom: 5%;
-        font-size: 0.4rem;
-    }
-
-    .product {
-        width: 100%;
-        max-width: 300px;
-    }
-
-    #contact {
-        padding: 15px;
-    }
-
-    #contact h2 {
-        font-size: 1.5rem;
-    }
-
-    #contact input[type="text"],
-    #contact input[type="email"],
-    #contact textarea {
-        font-size: 0.9rem;
-    }
-
-    #contact .btn {
-        font-size: 0.9rem;
-        padding: 12px;
-    }
+    
+    #contact form { padding: 1.5rem; }
 }
